@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Stop Apache if it's running
+if pgrep apache2 >/dev/null; then
+    pkill apache2
+fi
+
+# Change ownership and permissions of nginx configuration file
+chown nginx /etc/nginx/nginx.conf
+chmod u+r /etc/nginx/nginx.conf
+
+# Replace port 80 with 8080 in nginx default site configuration
+sed -i 's/listen 80;/listen 8080;/g' /etc/nginx/sites-available/default
+
+# Restart nginx service as the nginx user
+sudo -u nginx service nginx restart
